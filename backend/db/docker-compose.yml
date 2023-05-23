@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  devolution_app:
+    container_name: devolution_app
+    image: postgres
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+      PGDATA: /data/devolution_app
+    volumes:
+      - devolution_app:/data/devolution_app
+    ports:
+      - "5434:5432"
+    networks:
+      - devolution_app_net
+    restart: unless-stopped
+
+networks:
+  devolution_app_net:
+    driver: bridge
+
+volumes:
+  devolution_app:
