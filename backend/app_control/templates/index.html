@@ -1,0 +1,69 @@
+{% block content %}
+  <h1>Devoluções</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Salvar">
+  </form>
+  <hr>
+  <h2>Devoluções registradas</h2>
+  <button id="btnAtualizar">Atualizar</button>
+  <table  id="devolucoes-table" style="border-collapse: separate; border-spacing: 10px;">
+    <thead>
+        <tr>
+            <th>Código Sedex Reverso</th>
+            <th>Data</th>
+            <th>Notas de Devolução</th>
+            <th>Status</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for devolucao in devolucoes %}
+            <tr>
+                <td>{{ devolucao.codigo_sedex }}</td>
+                <td>{{ devolucao.data|date:"d/m/Y" }}</td>
+                <td>
+                    {% for nota_devolucao in devolucao.notadevolucao_set.all %}
+                        {{ nota_devolucao.nota }},
+                    {% endfor %}
+                </td>
+                <td>{{ devolucao.status }}</td>
+                <td>{{ devolucao.email }}</td>
+            </tr>
+
+
+        {% endfor %}
+    </tbody>
+   </table>
+
+   <script>
+    const btnAtualizar = document.querySelector('#btnAtualizar');
+    btnAtualizar.addEventListener('click', function() {
+        // Fazer uma solicitação AJAX para atualizar as devoluções
+        fetch("{% url 'atualizar-devolucoes' %}")
+            .then(response => response.json())
+            .then(devolucoes => {
+                // Limpar a tabela atual
+                const tableBody = document.querySelector('#devolucoes-table tbody');
+                tableBody.innerHTML = '';
+    
+                // Adicionar as novas linhas à tabela
+                devolucoes.forEach(devolucao => {
+                    const row = `
+                        <tr>
+                            <td>${devolucao.codigo_sedex}</td>
+                            <td>${devolucao.data}</td>
+                            <td>${devolucao.notas_devolucao}</td>
+                            <td>${devolucao.status}</td>
+                            <td>${devolucao.email}</td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            });
+    });
+    </script>
+  
+
+{% endblock %}
