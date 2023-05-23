@@ -21,7 +21,7 @@ export default function Login() {
 
         if (result) {
             localStorage.setItem(USERTOKEN, result?.data?.access)
-            history("/")
+            window.location.href = "http://127.0.0.1:8000/app";
         }
 
         setIsLoading(false)
@@ -58,9 +58,9 @@ export default function Login() {
         <Link to="/check-user">Novo Usuário?</Link>
         <br />
         <br />
-        <div style={{ textAlign: "center" }}>
+        {/* <div style={{ textAlign: "center" }}>
           <Link to="/inventory-list">VEJA A LISTA DO INVENTÁRIO</Link>
-        </div>
+        </div> */}
       </AuthLayout>
     );
 }
