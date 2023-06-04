@@ -1,9 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 import re
 
-cookies = {
+""" cookies = {
     'CFID': 'Z2zupw17sx0mb9c8bxwecblmh2vu4f5bkqznfhwe1sftit2te7n-226488339',
     'CFTOKEN': 'Z2zupw17sx0mb9c8bxwecblmh2vu4f5bkqznfhwe1sftit2te7n-56d8fb4d404b7872-F481511E-03D2-9065-E02188169BE03973',
     'CFGLOBALS': 'urltoken%3DCFID%23%3D226488339%26CFTOKEN%23%3D56d8fb4d404b7872%2DF481511E%2D03D2%2D9065%2DE02188169BE03973%26jsessionid%23%3D7EB5AE79466A8EB0CED58B55F5405A09%2Ecfusion01%23lastvisit%3D%7Bts%20%272023%2D03%2D10%2010%3A12%3A15%27%7D%23hitcount%3D2%23timecreated%3D%7Bts%20%272023%2D03%2D10%2010%3A12%3A15%27%7D%23cftoken%3D56d8fb4d404b7872%2DF481511E%2D03D2%2D9065%2DE02188169BE03973%23cfid%3D226488339%23',
@@ -53,7 +52,7 @@ response = requests.post(
     cookies=cookies,
     headers=headers,
     data=data,
-)
+) """
 
 
 

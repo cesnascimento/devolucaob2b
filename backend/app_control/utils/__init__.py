@@ -1,1 +1,2 @@
-from app_control.utils.correios_sraper import correios_scraper
+from app_control.utils.correios_sraper import correios_sedex
+from app_control.utils.correios_postagem import correios_postagem

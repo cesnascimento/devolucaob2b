@@ -1,4 +1,4 @@
-from app_control.utils import correios_scraper
+from app_control.utils import correios_sedex
 from .models import Devolucao, NotaDevolucao
 from django import forms
 from django.utils import timezone
@@ -67,7 +67,7 @@ class DevolucaoForm(forms.ModelForm):
 
     class Meta:
         model = Devolucao
-        fields = ['codigo_sedex', 'notas_devolucao',
+        fields = ['codigo_postagem', 'notas_devolucao',
                   'data_devolucao', 'email']
 
     def save(self, commit=True):
@@ -82,7 +82,7 @@ class DevolucaoForm(forms.ModelForm):
                     devolucao=devolucao, nota=nota.strip())
                 nota_devolucao.save()
 
-        devolucao.status = correios_scraper(
+        devolucao.status = correios_sedex(
             self.cleaned_data.get("codigo_sedex"))
         if commit:
             devolucao.save()

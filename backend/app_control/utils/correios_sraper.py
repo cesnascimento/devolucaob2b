@@ -21,7 +21,7 @@ headers = {
 }
 
 @lru_cache(maxsize=32)
-def correios_scraper(sedex_code: str) -> str:
+def correios_sedex(sedex_code: str) -> str:
     print('Logger: Iniciando scraper', sedex_code)
     params = {'id': sedex_code}
     url = 'https://www.linkcorreios.com.br/'
