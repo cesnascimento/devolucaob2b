@@ -140,11 +140,16 @@ print(linha_texto)
 
 padrao_codigo = r'\d+'
 padrao_situacao = r'[A-Za-z\s]+'
+padrao = r"OV\d+BR\d+"
 
 # Aplicando os padrões de regex na string
 codigo = re.search(padrao_codigo, linha_texto).group()
 situacao = re.search(padrao_situacao, linha_texto).group()
-
-# Exibindo os valores extraídos
+resultado = re.search(padrao, linha_texto)
 print("Código: ", codigo)
 print("Situação: ", situacao)
+if resultado:
+    informacao = resultado.group()
+    print('Rastreio: ', informacao)
+else:
+    print("Rastreio não encontrado.")

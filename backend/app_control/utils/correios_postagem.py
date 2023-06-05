@@ -2,6 +2,7 @@ from functools import lru_cache
 import requests
 from bs4 import BeautifulSoup
 import re
+from app_control.utils import correios_sedex
 
 
 cookies = {
@@ -91,14 +92,23 @@ def correios_postagem(post_code: str) -> str:
 
     padrao_codigo = r'\d+'
     padrao_situacao = r'[A-Za-z\s]+'
+    padrao = r"OV\d+BR\d+"
 
     # Aplicando os padrões de regex na string
     codigo = re.search(padrao_codigo, linha_texto).group()
     situacao = re.search(padrao_situacao, linha_texto).group()
-    print("Código: ", codigo)
-    print("Situação: ", situacao)
+    resultado = re.findall(padrao, linha_texto)
     try:
-        return f"{codigo} {situacao}"
+        print("Código: ", codigo)
+        print("Situação: ", situacao)
+        print("Sedex: ", resultado)
+        if resultado:
+            informacao = resultado.group()
+            print('Rastreio: ', informacao)
+            return f'{correios_sedex(informacao)}'
+        else:
+            print("Rastreio não encontrado.")
+            return f"{codigo} ({situacao})"
     except AttributeError:
         return 'Ainda não postado'
     except Exception as e:

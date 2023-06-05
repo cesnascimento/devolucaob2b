@@ -11,6 +11,7 @@
   <table  id="devolucoes-table" style="border-collapse: separate; border-spacing: 10px;">
     <thead>
         <tr>
+            <th>Código de Postagem</th>
             <th>Código Sedex Reverso</th>
             <th>Data</th>
             <th>Notas de Devolução</th>
@@ -21,6 +22,7 @@
     <tbody>
         {% for devolucao in devolucoes %}
             <tr>
+                <td>{{ devolucao.codigo_postagem }}</td>
                 <td>{{ devolucao.codigo_sedex }}</td>
                 <td>{{ devolucao.data|date:"d/m/Y" }}</td>
                 <td>
@@ -52,6 +54,7 @@
                 devolucoes.forEach(devolucao => {
                     const row = `
                         <tr>
+                            <td>${devolucao.codigo_postagem}</td>
                             <td>${devolucao.codigo_sedex}</td>
                             <td>${devolucao.data}</td>
                             <td>${devolucao.notas_devolucao}</td>
