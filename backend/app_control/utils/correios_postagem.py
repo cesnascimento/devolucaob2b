@@ -43,7 +43,10 @@ headers = {
     'sec-ch-ua-platform': '"Windows"',
 }
 
-data = {
+
+@lru_cache(maxsize=32)
+def correios_postagem(post_code: str) -> str:
+    data = {
     'codAdministrativo': '13365398',
     'param01': '',
     'param02': '',
@@ -54,7 +57,7 @@ data = {
     'controle': '',
     'cartao': '',
     'tipo': '6',
-    'objeto': '2504201079',
+    'objeto': f'{post_code}',
     'periodo': '',
     'data1': '',
     'data2': '',
@@ -66,11 +69,6 @@ data = {
         '20',
     ],
 }
-
-
-
-@lru_cache(maxsize=32)
-def correios_postagem(post_code: str) -> str:
     response = requests.post(
     'https://www2.correios.com.br/encomendas/servicosonline/logisticaReversa/consultas/resultado.cfm?xest=false?requestimeout=600',
     cookies=cookies,
@@ -92,7 +90,7 @@ def correios_postagem(post_code: str) -> str:
 
     padrao_codigo = r'\d+'
     padrao_situacao = r'[A-Za-z\s]+'
-    padrao = r"OV\d+BR\d+"
+    padrao = r"OV.*?BR"
 
     # Aplicando os padrões de regex na string
     codigo = re.search(padrao_codigo, linha_texto).group()
@@ -101,11 +99,11 @@ def correios_postagem(post_code: str) -> str:
     try:
         print("Código: ", codigo)
         print("Situação: ", situacao)
-        print("Sedex: ", resultado)
+        print("Sedex: ", resultado[0])
+        request = correios_sedex(resultado[0])
+        print("Request: ", request)
         if resultado:
-            informacao = resultado.group()
-            print('Rastreio: ', informacao)
-            return f'{correios_sedex(informacao)}'
+            return request
         else:
             print("Rastreio não encontrado.")
             return f"{codigo} ({situacao})"

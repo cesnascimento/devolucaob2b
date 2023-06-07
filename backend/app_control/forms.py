@@ -1,4 +1,4 @@
-from app_control.utils import correios_sedex
+from app_control.utils import correios_postagem, correios_sedex
 from .models import Devolucao, NotaDevolucao
 from django import forms
 from django.utils import timezone
@@ -83,6 +83,8 @@ class DevolucaoForm(forms.ModelForm):
                 nota_devolucao.save()
 
         devolucao.status = correios_sedex(
+            self.cleaned_data.get("codigo_postagem"))
+        devolucao.codigo_sedex = correios_postagem(
             self.cleaned_data.get("codigo_sedex"))
         if commit:
             devolucao.save()

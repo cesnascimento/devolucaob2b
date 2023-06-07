@@ -5,7 +5,7 @@ class Devolucao(models.Model):
     codigo_postagem = models.CharField(max_length=20, unique=True, null=True,  error_messages={
         'unique': 'Este código já existe',
     })
-    codigo_sedex = models.CharField(max_length=20, unique=True, error_messages={
+    codigo_sedex = models.CharField(max_length=20, error_messages={
         'unique': 'Este código já existe',
     })
     status = models.CharField(max_length=500, null=True)

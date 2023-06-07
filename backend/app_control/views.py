@@ -25,11 +25,11 @@ def index(request):
 
 def atualizar_devolucoes(request):
     devolucoes = Devolucao.objects.all()
-    print(devolucoes)
     update_statuses(devolucoes)
     data = []
     for devolucao in devolucoes:
         data.append({
+            'codigo_postagem': devolucao.codigo_postagem,
             'codigo_sedex': devolucao.codigo_sedex,
             'data': devolucao.data.strftime('%d/%m/%Y'),
             'notas_devolucao': ', '.join(devolucao.notadevolucao_set.values_list('nota', flat=True)),
