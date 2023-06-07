@@ -10,7 +10,7 @@ class DevolucaoForm(forms.ModelForm):
     data_devolucao = forms.DateField(widget=forms.DateInput(
         attrs={'type': 'date', 'value': timezone.now().strftime('%Y-%m-%d')}))
     email_choices = [
-        ('cnascimento@dermage.com.br', 'cnascimento@dermage.com.br'),
+        ('mnascimento@dermage.com.br', 'mnascimento@dermage.com.br'),
         ('aguasclaras@dermage.com.br', 'aguasclaras@dermage.com.br'),
         ('aracaju@dermage.com.br', 'aracaju@dermage.com.br'),
         ('belem@dermage.com.br', 'belem@dermage.com.br'),
@@ -82,10 +82,13 @@ class DevolucaoForm(forms.ModelForm):
                     devolucao=devolucao, nota=nota.strip())
                 nota_devolucao.save()
 
-        devolucao.status = correios_sedex(
+        """ devolucao.status = correios_sedex(
+            self.cleaned_data.get("codigo_sedex")) """
+        devolucao.status = correios_postagem(
             self.cleaned_data.get("codigo_postagem"))
         devolucao.codigo_sedex = correios_postagem(
-            self.cleaned_data.get("codigo_sedex"))
+            self.cleaned_data.get("codigo_postagem"))
+        print('status e sedex', devolucao.status, devolucao.codigo_sedex)
         if commit:
             devolucao.save()
         return devolucao

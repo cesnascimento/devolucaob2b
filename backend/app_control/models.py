@@ -1,11 +1,11 @@
 from django.db import models
-from app_control.utils import correios_sedex
+from app_control.utils import correios_postagem, correios_sedex
 
 class Devolucao(models.Model):
-    codigo_postagem = models.CharField(max_length=20, unique=True, null=True,  error_messages={
+    codigo_postagem = models.CharField(max_length=500, unique=True, null=True,  error_messages={
         'unique': 'Este código já existe',
     })
-    codigo_sedex = models.CharField(max_length=20, error_messages={
+    codigo_sedex = models.CharField(max_length=500, error_messages={
         'unique': 'Este código já existe',
     })
     status = models.CharField(max_length=500, null=True)
@@ -13,8 +13,10 @@ class Devolucao(models.Model):
     email = models.CharField(max_length=500, null=True)
 
     def update_status(self):
-        rastreio = correios_sedex(self.codigo_sedex)
-        self.status = rastreio
+        rastreio = correios_postagem(self.codigo_postagem)
+        sedex = correios_sedex(rastreio)
+        self.status = sedex
+        self.codigo_sedex = rastreio
         self.save()
 
 

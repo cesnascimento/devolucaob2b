@@ -75,7 +75,7 @@ def correios_postagem(post_code: str) -> str:
     headers=headers,
     data=data,
 )
-    print('Logger: Iniciando scraper', post_code)
+    print('Logger: Iniciando scraper postagem', post_code)
     soup = BeautifulSoup(response.text, 'html.parser')
 
 
@@ -103,7 +103,7 @@ def correios_postagem(post_code: str) -> str:
         request = correios_sedex(resultado[0])
         print("Request: ", request)
         if resultado:
-            return request
+            return resultado[0]
         else:
             print("Rastreio não encontrado.")
             return f"{codigo} ({situacao})"
