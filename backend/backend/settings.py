@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ttbap($dk!#z6*tpw$a43cnhwli&i$*xce(#^4@0zxn)l%*2@1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = "user_control.CustomUser"
 
