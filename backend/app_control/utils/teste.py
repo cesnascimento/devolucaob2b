@@ -105,7 +105,7 @@ data = {
     'controle': '',
     'cartao': '',
     'tipo': '6',
-    'objeto': '2504201079',
+    'objeto': '2433860291',
     'periodo': '',
     'data1': '',
     'data2': '',
@@ -135,8 +135,17 @@ linha_desejada = soup.find('tr', class_='cssLinhaTitulo').find_next_sibling('tr'
 # Extraindo o texto formatado da linha desejada
 linha_texto = linha_desejada.get_text(strip=True)
 
+
 # Exibindo a linha em formato de texto
-print(linha_texto)
+#print(linha_desejada.find_all('td'))
+
+td_tags = soup.find_all('td')[1:]
+
+# Extrair os valores das tags td em uma lista
+lista_td = [td.get_text(strip=True) for td in td_tags]
+
+print(lista_td[7], lista_td[8], lista_td[10])
+
 
 padrao_codigo = r'\d+'
 padrao_situacao = r'[A-Za-z\s]+'

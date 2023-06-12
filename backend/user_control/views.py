@@ -3,12 +3,15 @@ from .serializers import (
     CreateUserSerializer, CustomUser, LoginSerializer, UpdatePasswordSerializer,
     CustomUserSerializer, UserActivities, UserActivitiesSerializer
 )
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
 from datetime import datetime
 from backend.utils import CustomPagination, get_access_token, get_query
 from backend.custom_methods import IsAuthenticatedCustom
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 
 def add_user_activity(user, action):
@@ -174,3 +177,16 @@ class UsersView(ModelViewSet):
             results = results.filter(query)
         
         return results
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')  # Altere 'home' para a URL da página após o login
+        else:
+            messages.error(request, 'Usuário ou senha incorretos.')
+    return render(request, 'login.html')

@@ -79,7 +79,7 @@ def correios_postagem(post_code: str) -> str:
     soup = BeautifulSoup(response.text, 'html.parser')
 
 
-    # Encontrando a linha desejada na tabela
+    """ # Encontrando a linha desejada na tabela
     linha_desejada = soup.find('tr', class_='cssLinhaTitulo').find_next_sibling('tr')
 
     # Extraindo o texto formatado da linha desejada
@@ -95,15 +95,19 @@ def correios_postagem(post_code: str) -> str:
     # Aplicando os padrões de regex na string
     codigo = re.search(padrao_codigo, linha_texto).group()
     situacao = re.search(padrao_situacao, linha_texto).group()
-    resultado = re.findall(padrao, linha_texto)
+    resultado = re.findall(padrao, linha_texto) """
+    td_tags = soup.find_all('td')[1:]
+    lista_td = [td.get_text(strip=True) for td in td_tags]
+
+    codigo, situacao, resultado = lista_td[7], lista_td[8], lista_td[10]
     try:
         print("Código: ", codigo)
         print("Situação: ", situacao)
-        print("Sedex: ", resultado[0])
-        request = correios_sedex(resultado[0])
+        print("Sedex: ", resultado)
+        request = correios_sedex(resultado)
         print("Request: ", request)
         if resultado:
-            return resultado[0]
+            return resultado
         else:
             print("Rastreio não encontrado.")
             return f"{codigo} ({situacao})"

@@ -3,11 +3,14 @@ from django.shortcuts import render, redirect
 from .models import Devolucao
 from .forms import DevolucaoForm
 from concurrent.futures import ThreadPoolExecutor
+from django.contrib.auth.decorators import login_required
+
 
 def update_statuses(devolucoes):
     with ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(lambda devolucao: devolucao.update_status(), devolucoes)
 
+@login_required
 def index(request):
     devolucoes = Devolucao.objects.all()
     update_statuses(devolucoes)
