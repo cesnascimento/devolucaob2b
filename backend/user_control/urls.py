@@ -5,6 +5,7 @@ from .views import (
 )
 from . import views
 from rest_framework.routers import DefaultRouter
+from django.shortcuts import redirect
 
 router = DefaultRouter(trailing_slash=False)
 
@@ -18,4 +19,6 @@ router.register("users", UsersView, 'users')
 urlpatterns = [
     path("", include(router.urls)),
     path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('', lambda request: redirect('user/login/'))
 ]

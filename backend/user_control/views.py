@@ -1,4 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
+
+from user_control.forms import SignUpForm
 from .serializers import (
     CreateUserSerializer, CustomUser, LoginSerializer, UpdatePasswordSerializer,
     CustomUserSerializer, UserActivities, UserActivitiesSerializer
@@ -6,12 +8,14 @@ from .serializers import (
 from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, get_user_model
 from datetime import datetime
 from backend.utils import CustomPagination, get_access_token, get_query
 from backend.custom_methods import IsAuthenticatedCustom
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 def add_user_activity(user, action):
@@ -181,12 +185,26 @@ class UsersView(ModelViewSet):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('index')  # Altere 'home' para a URL da página após o login
         else:
             messages.error(request, 'Usuário ou senha incorretos.')
     return render(request, 'login.html')
+
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
