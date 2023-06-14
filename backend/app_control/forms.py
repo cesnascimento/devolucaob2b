@@ -7,8 +7,6 @@ from django.utils import timezone
 class DevolucaoForm(forms.ModelForm):
     notas_devolucao = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 3}), required=True)
-    data_devolucao = forms.DateField(widget=forms.DateInput(
-        attrs={'type': 'date', 'value': timezone.now().strftime('%Y-%m-%d')}))
     email_choices = [
         ('mnascimento@dermage.com.br', 'mnascimento@dermage.com.br'),
         ('aguasclaras@dermage.com.br', 'aguasclaras@dermage.com.br'),
@@ -61,14 +59,15 @@ class DevolucaoForm(forms.ModelForm):
         ('voltaredonda@dermage.com.br', 'voltaredonda@dermage.com.br')
     ]
     email = forms.ChoiceField(choices=email_choices)
-    """ status = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 3}), required=False)
-    print() """
 
     class Meta:
         model = Devolucao
         fields = ['codigo_postagem', 'notas_devolucao',
-                  'data_devolucao', 'email']
+                  'data', 'email']
+        widgets = { 
+            'data': forms.DateInput(attrs={'type': 'date'}),
+            'notas_devolucao': forms.Textarea(attrs={'rows': 4}),
+                   }
 
     def save(self, commit=True):
         notas = self.cleaned_data.get('notas_devolucao')
@@ -82,8 +81,6 @@ class DevolucaoForm(forms.ModelForm):
                     devolucao=devolucao, nota=nota.strip())
                 nota_devolucao.save()
 
-        """ devolucao.status = correios_sedex(
-            self.cleaned_data.get("codigo_sedex")) """
         devolucao.status = correios_postagem(
             self.cleaned_data.get("codigo_postagem"))
         devolucao.codigo_sedex = correios_postagem(

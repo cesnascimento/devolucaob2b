@@ -1,5 +1,6 @@
 from django.db import models
 from app_control.utils import correios_postagem, correios_sedex
+from django.utils import timezone
 
 class Devolucao(models.Model):
     codigo_postagem = models.CharField(max_length=500, unique=True, null=True,  error_messages={
@@ -9,7 +10,7 @@ class Devolucao(models.Model):
         'unique': 'Este código já existe',
     })
     status = models.CharField(max_length=500, null=True)
-    data = models.DateTimeField(auto_now_add=True, null=True)
+    data = models.DateTimeField(null=True)
     email = models.CharField(max_length=500, null=True)
 
     def update_status(self):
